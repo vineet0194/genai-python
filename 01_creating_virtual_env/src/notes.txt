@@ -1,0 +1,36 @@
+1.  creating a virtual environment:
+    python -m venv .venv                (.venv is the folder name)
+
+2.  activating the virtual environment
+    .venv/Scripts/activate              (Script to activate the venv)
+
+3.  installing requirements from a txt file
+    - have a requirements.txt (can change name file with all the dependancies)
+    pip install -r requirements.txt
+
+4.  deactivating venv
+    deactivate        (run in terminal)
+
+/* ---------------------------------------------------------------------------- */
+
+folder structure:
+
+example: 
+    calculator/
+            │
+            ├── main.py
+            ├── config.py
+            ├── requirements.txt
+            ├── README.md
+            │
+            ├── utils/              # Package
+            │   ├── __init__.py
+            │   └── math_utils.py   # Module
+            │
+            ├── tests/
+            │   └── test_math_utils.py
+            │
+            └── assets/
+
+__init__.py tells Python that this directory should be treated as a package
+
