@@ -1,0 +1,187 @@
+Multi-head attention runs several self-attention mechanisms in parallel, allowing the model to learn different types of relationships between the same tokens simultaneously, and then combines those perspectives into a richer representation.
+
+Think of it this way:
+
+Self-attention asks: "Which words are important to me?"
+
+Multi-head attention asks: "Can I have multiple people look at this sentence from different perspectives at the same time?"
+
+Let's use your sentence
+I deposited money in the ICICI Bank.
+
+Suppose we're trying to understand the token:
+
+Bank
+With ONE attention head
+
+The model computes one set of attention weights.
+
+Maybe:
+
+Word	Attention
+deposited	35%
+money	30%
+ICICI	25%
+I	5%
+in	3%
+the	2%
+
+This head concludes:
+
+"Bank is a financial institution."
+
+Great.
+
+But maybe we lost some other useful information.
+
+Multi-head attention
+
+Instead of having one person analyze the sentence...
+
+Imagine having 8 experts.
+
+All of them read the same sentence, but each is free to focus on something different.
+
+Head 1 — Financial meaning
+Bank
+↑
+money
+deposited
+ICICI
+
+Learns:
+
+This is about banking.
+
+Head 2 — Named entities
+Bank
+↑
+ICICI
+
+Learns:
+
+ICICI is a company/organization.
+
+Head 3 — Grammar
+Bank
+↑
+the
+
+Learns:
+
+"the Bank" is a noun phrase.
+
+Head 4 — Verb-object relationship
+deposited
+      ↓
+     Bank
+
+Learns:
+
+The action "deposited" is associated with "Bank."
+
+Head 5 — Long-distance relationships
+
+Maybe it notices:
+
+I
+↓
+
+Bank
+
+Understanding who performed the action.
+
+Every head produces its own understanding.
+
+Then the Transformer combines them.
+
+Instead of getting:
+
+One opinion
+
+you get:
+
+Financial meaning
++
+Grammar
++
+Entity recognition
++
+Verb relationships
++
+Long-range context
+
+into one richer representation.
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+Let's use your River Bank example
+
+Sentence:
+
+We had a picnic near the river bank.
+
+Head 1:
+
+bank
+↑
+river
+
+Meaning:
+
+River edge.
+
+Head 2:
+
+bank
+↑
+picnic
+near
+
+Meaning:
+
+Outdoor location.
+
+Head 3:
+
+bank
+↑
+the
+
+Grammar.
+
+Head 4:
+
+bank
+↑
+river
+picnic
+
+Scene understanding.
+
+All these are merged.
+
+The final representation is much richer than if only one head had looked at the sentence.
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+The pipeline
+Sentence
+      ↓
+Token Embeddings
+      ↓
++ Positional Encoding
+      ↓
+──────────────────────────
+Head 1 → Finance
+Head 2 → Grammar
+Head 3 → Entities
+Head 4 → Long-range context
+Head 5 → Syntax
+...
+──────────────────────────
+      ↓
+Combine all heads
+      ↓
+Richer token representations

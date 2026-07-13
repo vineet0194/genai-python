@@ -1,0 +1,11 @@
+GPT stands for: Generative Pre-trained Transformer
+
+Each word has a specific meaning:
+
+Generative → It generates new content (text, code, summaries, images, etc.) rather than just classifying or retrieving information.
+Pre-trained → Before you interact with it, the model is trained on a very large corpus of text to learn language patterns, grammar, reasoning, and general knowledge.
+Transformer → The neural network architecture it is built on, introduced in the 2017 paper Attention Is All You Need. Transformers use a mechanism called attention to understand relationships between different parts of the input.
+
+G → What does it do? → Generate
+P → How did it learn? → Pre-trained
+T → What architecture is it built on? → Transformer

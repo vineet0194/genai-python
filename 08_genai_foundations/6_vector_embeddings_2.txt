@@ -1,0 +1,187 @@
+Positional encoding is additional information added to each token's embedding so the
+Transformer knows the order and position of tokens in the input sequence.
+
+Remember that a Transformer looks at all tokens at once using attention.
+
+Now imagine the sentence:
+
+Vineet loves AI
+
+After tokenization:
+
+["Vineet", "loves", "AI"]
+
+Then embeddings:
+
+Vineet → [ ... ]
+loves  → [ ... ]
+AI      → [ ... ]
+
+At this point, the Transformer only sees three vectors.
+
+It has no idea which one came first, second, or third.
+
+To the Transformer, these two would initially look identical:
+
+Vineet loves AI
+
+and
+
+AI loves Vineet
+
+because it only has the embeddings:
+
+[Vineet], [loves], [AI]
+
+There is nothing telling it the order.
+
+That's where positional encoding comes in.
+
+It says:
+
+"Besides the meaning of the token, also tell me where it appears in the sentence."
+
+For example:
+
+Position 0 → "Vineet"
+Position 1 → "loves"
+Position 2 → "AI"
+
+Each position has its own positional vector.
+
+Then the model combines them:
+
+Final representation = Token Embedding + Positional Encoding
+
+
+Conceptually:
+
+"Vineet"
+
+Meaning:
+[0.12, 0.87, ...]
+
++
+
+Position 0:
+[0.54, 0.11, ...]
+
+↓
+
+Input to Transformer:
+[0.66, 0.98, ...]
+
+So the Transformer actually receives:
+    Text
+        ↓
+    Tokenization
+        ↓
+    Token IDs
+        ↓
+    Embeddings (meaning)
+        ↓
+    + Positional Encoding (position)
+        ↓
+    Transformer
+
+**********************************************************************************************
+
+but you said embedding is generated according to the surrounding words right? so at that time does the transformer not know what is the position or the order of the tokens? or does it only generate the embedding according to what all other tokens are present in my current context devoid of any positional argument
+
+The contextual embeddings I talked about are the output of the Transformer layers,
+not the initial embedding lookup.
+
+!!!! Stage 1: Embedding Layer (Before the Transformer)
+
+Suppose you have:
+
+The canine is barking.
+
+After tokenization:
+
+["The", "canine", "is", "barking"]
+
+The embedding lookup simply does:
+
+"canine"
+    ↓
+[0.32, -0.81, ...]
+
+This is a static embedding.
+
+At this point:
+
+❌ No context.
+❌ No attention.
+❌ Doesn't know whether canine means dog or tooth.
+
+It's just looking up the vector for "canine".
+
+!!!! Stage 2: Positional Encoding
+
+Now positional information is added.
+
+Conceptually:
+    Token Embedding
+            +
+    Position Embedding
+            ↓
+    Input to Transformer
+
+So now "canine" knows:
+    what word it is
+    where it is in the sentence
+
+!!!! Stage 3: Transformer (Attention)
+
+
+The Transformer sees:
+    The canine is barking.
+
+When processing "canine", attention looks at:
+    The
+    canine
+    is
+    barking
+
+It realizes:
+
+"Hmm... barking is strongly associated with dogs."
+
+So the internal representation of "canine" changes.
+
+Later Transformer layers continue refining it.
+
+By the end:
+    "canine"
+    ↓
+    Context-aware representation
+
+Now it represents dog, not tooth.
+
+//////////////////////////////////////////////////////////////
+
+there are actually two kinds of embeddings people talk about.
+
+Input embedding = static lookup vector.
+
+Contextual embedding (hidden representation) = the refined, context-aware vector produced after attention. This is the one that "understands" whether canine refers to a dog or a tooth.
+
+1. Input Embeddings
+Token ID
+↓
+Embedding Lookup (Static.)
+
+One vector per token.
+
+2. Contextual Embeddings
+
+After several Transformer layers:
+
+Token
+  ↓
+Attention
+  ↓
+New representation
+
+These depend on context.

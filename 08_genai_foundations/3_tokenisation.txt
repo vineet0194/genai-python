@@ -1,0 +1,64 @@
+Tokens - Tokens are the basic units of text that an LLM reads and generates.
+
+Think of them as the AI's "vocabulary pieces."
+
+A token is not necessarily a word.
+
+For example:
+
+"I love programming." might be tokenized as: ["I", " love", " programming", "."]
+
+Notice that spaces are often included with the following word.
+
+Sometimes a single word is split into multiple tokens.
+
+For example: unbelievable might become: ["un", "believ", "able"]
+
+because those pieces occur frequently across many words.
+
+Why not just use words? Because there are millions of possible words.
+Instead of storing each as a separate unit, the model learns common pieces
+like:
+        program
+        mer
+        ming
+        mable
+        matically
+
+instead of:
+        programming
+        programmer
+        programmable
+        programmers
+        programmatically
+
+Tokenization is the process of breaking text into tokens and converting those tokens into numerical IDs so a language model can process them.
+
+Think of it as a translator between humans and GPT.
+Human Text
+      ↓
+Tokenizer
+      ↓
+Tokens
+
+For example, suppose you type: I love Python!
+The tokenizer might split it into: ["I", " love", " Python", "!"]
+
+Then it converts each token into an ID:
+
+"I"        → 40
+" love"    → 1842
+" Python"  → 11361
+"!"        → 0
+
+The GPT never sees the original string. It only sees: [40, 1842, 11361, 0]
+These token IDs are what get fed into the Transformer.
+
+When GPT generates a response, the reverse happens:     [ Detokenisation ]
+Predicted Token IDs
+        ↓
+Tokenizer
+        ↓
+Human-readable text
+
+Every model has its own unique way of tokenisationa and detokenisation

@@ -1,0 +1,171 @@
+A vector embedding is a numerical representation of the meaning (semantics) and relationship
+of some data, such as text, an image, or audio so that a model can understand and compare it.
+
+Basically -> embedding is a way to convey the "meaning" of a word to a model
+
+Suppose you have these sentences:
+
+I love dogs.
+Dogs are amazing animals.
+I enjoy pizza.
+
+An embedding model converts them into vectors (lists of numbers):
+
+"I love dogs."
+    ↓
+[0.13, -0.82, 0.45, 1.72, ...]
+
+"Dogs are amazing animals."
+            ↓
+[0.10, -0.80, 0.48, 1.69, ...]
+
+"I enjoy pizza."
+        ↓
+[-1.23, 2.14, -0.61, 0.05, ...]
+
+Notice that the first two vectors are numerically closer to each other than the third.
+!!!!    That closeness represents semantic similarity.     !!!!
+
+*****************************************************************************************************************
+
+Why do we need them?
+
+Suppose you ask: "Tell me about canines."
+
+Your database contains: Dogs are loyal pets.
+
+Keyword search might fail because: canines ≠ dogs
+
+!!!! But embeddings capture meaning. !!!!
+
+The embedding for:
+canines
+
+will be close to the embedding for:
+dogs
+
+So the system can retrieve the correct document.
+
+*****************************************************************************************************************
+
+! how is tokenisation different from embedding !        -       bounty question
+
+One-line difference
+Tokenization → Converts text into token IDs (identifiers).
+Embeddings → Converts token IDs into dense vectors that capture semantic meaning.
+
+tokens are just identifiers for a given word/input
+it is basically an ID given to that particular word
+eg:
+
+Input: I love dogs
+
+Tokenizer produces token IDs:       It's simply the ID assigned to that token.
+"I"      → 40
+" love"  → 1842
+" dogs"  → 9021
+
+Now each token ID is looked up in an embedding table.
+
+For example:
+
+40
+↓
+[0.23, -0.51, 1.22, ...]
+
+1842
+ ↓
+[-0.72, 0.11, 0.98, ...]
+
+9021
+ ↓
+[1.63, -0.44, 0.09, ...]
+
+Now the model has vectors instead of IDs.
+
+These vectors contain semantic information.
+
+////////////////////////////////////////////////
+
+An embedding is more like a feature vector.
+
+Dog
+↓
+[
+  mammal,
+  animal,
+  pet,
+  furry,
+  four-legged,
+  ...
+]
+
+Embeddings:
+
+dog → [0.12, 0.87, ...]
+cat → [0.14, 0.84, ...]
+car → [-1.23, 2.56, ...]
+
+Now:
+
+Dog and Cat vectors are close.
+Dog and Car vectors are far apart.
+
+The numbers encode meaning, not identity.
+
+*****************************************************************************************************************
+
+Q. but i can have multiple meanings of a word right?
+like canine can mean a dog and my tooth too, how does an embedding capture this?
+
+The answer depends on which kind of embeddings we're talking about.
+Modern LLMs use contextual embeddings.
+
+The embedding is computed using the entire sentence, not just the word itself.
+
+Sentence 1:
+The canine is barking.
+
+The embedding for "canine" becomes something like:
+
+close to:
+    dog
+    wolf
+    pet
+animal
+
+------
+
+Sentence 2:
+The canine tooth is broken.
+
+Now the embedding for "canine" changes:
+
+close to:
+    tooth
+    dentist
+    jaw
+    molar
+
+-----
+
+Same word. Different vector.
+
+----------------------------------------------------------
+
+When computing the representation of "canine", the transformer doesn't look only at that word.
+It also looks at surrounding words - the entire sentence.
+
+This is one of the biggest reasons Transformers outperformed older models.
+
+Older models:
+    canine
+      ↓
+    One vector forever
+
+Transformers:
+    Sentence
+        ↓
+    Understand context
+        ↓
+    Generate a context-specific vector

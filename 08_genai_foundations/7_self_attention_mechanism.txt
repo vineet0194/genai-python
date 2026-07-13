@@ -1,0 +1,160 @@
+Self-attention is a machine learning mechanism that allows a neural network to
+weigh the importance of different elements within an input sequence relative to each other. 
+
+Positional Encoding answers: "Where is this token?"
+Self-Attention answers: "Which other tokens should I pay attention to in order to understand this token?"
+
+You need both.
+
+Let's use your example
+Sentence 1
+    I deposited money in the ICICI Bank.
+Sentence 2
+    We had a picnic near the river bank.
+
+/////////////////////////////
+
+Step 1: Tokenization
+
+Sentence 1:
+
+[I] [deposited] [money] [in] [the] [ICICI] [Bank]
+
+Sentence 2:
+
+[We] [had] [a] [picnic] [near] [the] [river] [bank]
+
+/////////////////////////////
+
+Step 2: Static Embeddings
+
+Initially:
+
+bank
+↓
+Static embedding
+
+The model still doesn't know whether "bank" means:
+
+🏦 Financial institution
+🌊 River bank
+
+/////////////////////////////
+
+Step 3: Positional Encoding
+
+Suppose "bank" is the last token.
+
+The model now knows:
+
+bank
+
+Meaning:
+[...]
+
++
+
+Position:
+7
+
+Great.
+
+Now it knows where "bank" is.
+
+But...
+
+Does position tell you which meaning it has?
+
+No.
+
+Whether it's position 7 or position 3 tells you nothing about finance or rivers.
+
+/////////////////////////////
+
+Step 4: Self-Attention
+
+Now the Transformer starts processing the token "bank".
+
+It asks:
+
+"To understand 'bank', which other words in this sentence matter?"
+
+!!!!!!!!!!!!!!!! Sentence 1
+I deposited money in the ICICI Bank.
+
+Attention weights might look like:
+
+Word	        Importance to "Bank"
+I	                         ⭐
+deposited	        ⭐⭐⭐⭐⭐
+money	            ⭐⭐⭐⭐⭐
+ICICI	            ⭐⭐⭐⭐⭐
+in	                         ⭐
+the	                         ⭐
+Bank	                 ⭐⭐⭐
+
+The model realizes:
+
+money
+ICICI
+deposited
+
+are all finance-related.
+
+So the representation of "Bank" shifts toward:
+
+Financial Institution
+
+
+
+!!!!!!!!!!!!!!!! Sentence 2
+We had a picnic near the river bank.
+
+Attention now becomes:
+
+Word	        Importance to "bank"
+We	                         ⭐
+had	                         ⭐
+picnic	                ⭐⭐⭐
+near	                ⭐⭐⭐
+river	            ⭐⭐⭐⭐⭐
+bank	                ⭐⭐⭐
+
+Now the strongest signal is:
+
+river
+
+So "bank" moves toward:
+
+Edge of a river
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+What is actually happening?
+
+Self-attention lets every token look at every other token and decide:
+
+"Who is important for understanding me?"
+
+So:
+
+bank
+
+doesn't blindly use its dictionary meaning.
+
+It asks:
+
+Should I pay attention to
+
+money?
+river?
+ICICI?
+picnic?
+
+The answer changes based on the sentence.
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+Why "Self" attention?
+
+Because the sentence is attending to itself.

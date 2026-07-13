@@ -1,0 +1,61 @@
+"GPT predicts one token at a time, repeatedly until it decides to stop (or reaches a token limit)."
+eg:
+
+Suppose your prompt is: "The capital of France is"
+
+The model receives all those tokens.
+
+It predicts the next token.
+
+Maybe: "Paris"
+
+Now the input becomes: "The capital of France is Paris"
+
+Again, it predicts the next token.
+
+Maybe: .
+
+Now the input becomes: The capital of France is Paris.
+
+Again:
+
+Next token: It
+
+Now: The capital of France is Paris. It
+
+Again:
+
+Next token: is
+
+Then: known
+
+Then: for
+
+Then: ...
+
+This repeats hundreds or thousands of times.
+
+////////////////////////////////////////////////
+
+so you can think of it as :
+
+Initially:
+
+Prompt
+    ↓
+Predict Token 1
+    ↓
+Prompt + Token 1
+    ↓
+Predict Token 2
+    ↓
+Prompt + Token 1 + Token 2
+    ↓
+Predict Token 3
+...
+
+This continues until one of these happens:
+
+The model predicts the EOS (End Of Sequence) token.
+It reaches the maximum number of tokens allowed for the response.
+The application using the model tells it to stop (e.g., a stop sequence).
